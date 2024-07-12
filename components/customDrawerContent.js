@@ -13,7 +13,7 @@ export default function CustomDrawerContent(props) {
         <Image source={require('../assets/Close.png')} style={{marginVertical: 10, left: 20}}/>
       </Pressable>
       <View style={styles.header}>
-        <Text style={styles.title}>USER</Text>
+        <Text style={styles.title}>Allison</Text>
       </View>
       <DrawerItemList {...props} />
     </DrawerContentScrollView>

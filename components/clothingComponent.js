@@ -3,22 +3,35 @@ import { View, Text, StyleSheet, FlatList, Image, Pressable } from 'react-native
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
+import { Alert } from 'react-native';
 
-const Item = ({ id, title, description, price, image, navigation }) => (
+const addToCart = async (item, setItem) => {
+    
+    try {
+      const cart = JSON.parse(await AsyncStorage.getItem('cart')) || [];
+      cart.push(item);
+      await AsyncStorage.setItem('cart', JSON.stringify(cart));
+      Alert.alert('Success', 'Product added to cart');
+    } catch (error) {
+      console.error(error);
+    }
+};
+
+const Item = ({ item, navigation }) => (
     <View style={{ flex: 1, flexDirection: 'column', margin: 1 }}>
-        <Pressable onPress={() => navigation.navigate('ProductDetail', { itemId: id })}>
+        <Pressable onPress={() => navigation.navigate('ProductDetail', { itemId: item.id })}>
             <Image
-                source={{ uri: image }}
+                source={{ uri: item.image }}
                 style={{ objectFit: 'contain', justifyContent: 'center', alignItems: 'center', height: 100, marginBottom: 25 }}
             />
-            <Pressable style={{ top: -30, left: 150 }} onPress={() => {}}>
+            <Pressable style={{ top: -30, left: 150 }} onPress={() => {addToCart(item)}}>
                 <Ionicons name="add-circle-outline" size={25} color="black" />
             </Pressable>
-            <Text style={styles.flatlistcontainer}>{title}</Text>
+            <Text style={styles.flatlistcontainer}>{item.title}</Text>
             <View style={{ height: 30 }}>
-                <Text style={styles.flatlistdescription}>{description}</Text>
+                <Text style={styles.flatlistdescription}>{item.description}</Text>
             </View>
-            <Text style={styles.flatlistprice}>${price}</Text>
+            <Text style={styles.flatlistprice}>${item.price}</Text>
         </Pressable>
     </View>
 );
@@ -69,15 +82,26 @@ function ClothingComponent({ category }) {
     // };
 
     return (
+        <>
+        <View>
+        <View style={styles.positioning}>
+        <View style={{flexDirection: 'right', justifyContent: 'space-between'}}>
+        <Text style={{fontSize: 30, right:120, top: -25}}> Our Story</Text>
+        <View style={{left:50}}>
+        <Pressable style={styles.filter}><Ionicons name="filter-outline" size={25} color="orange"/></Pressable>
+        <Pressable style={styles.list}>
+            <Ionicons name="list-outline" size={25} color="black"/>
+        </Pressable>
+        </View>
+        </View>
+        </View>
+        </View>
         <FlatList
             data={data}
             renderItem={({ item }) => (
                 <Item
                     id={item.id}
-                    title={item.title}
-                    description={item.description}
-                    price={item.price}
-                    image={item.image}
+                    item={item}
                     navigation={navigation} // Pass the navigation object as a prop
                 />
             )}
@@ -86,6 +110,7 @@ function ClothingComponent({ category }) {
             // onEndReached={handleLoadMore}
             // onEndReachedThreshold={0.5}
         />
+        </>
     );
 }
 
@@ -94,6 +119,20 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    positioning: {
+        alignItems:'center',
+        top: 40
+      },
+      filter: {
+        left: 150,
+        top: -57,
+        backgroundColor: '#F2F2F3',
+        borderRadius:20,
+        width:40,
+        height: 40,
+        justifyContent:'center',
+        alignItems:'center'
     },
     text: {
         fontSize: 20,
@@ -120,6 +159,27 @@ const styles = StyleSheet.create({
         color: 'orange',
         top: -20,
     },
+    filter: {
+        left: 150,
+        top: -57,
+        backgroundColor: '#F2F2F3',
+        borderRadius:20,
+        width:40,
+        height: 40,
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    list: {
+        left: 100,
+        top: -78,
+        backgroundColor: '#F2F2F3',
+        borderRadius:20,
+        width:40,
+        height: 40,
+        justifyContent:'center',
+        alignItems:'center',
+        marginTop: -20
+      }
 });
 
 export default ClothingComponent;

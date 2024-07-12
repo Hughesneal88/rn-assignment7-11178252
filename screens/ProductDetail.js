@@ -6,14 +6,27 @@ import { useNavigation, DrawerActions } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Pressable } from 'react-native';
+import Header from '../components/header';
+
+const addToCart = async (item, setItem) => {
+    
+    try {
+      const cart = JSON.parse(await AsyncStorage.getItem('cart')) || [];
+      cart.push(item);
+      await AsyncStorage.setItem('cart', JSON.stringify(cart));
+      Alert.alert('Success', 'Product added to cart');
+    } catch (error) {
+      console.error(error);
+    }
+};
+
 
 
 const ProductDetail = ({ route, navigation }) => {
     // const { product } = route.params || {};
     // const navigation = useNavigation();
-    const [item, setItem] = useState(null)
+    const [item, setItem] = useState(null);
     const { itemId } = route.params || {};
-  
     useEffect(() => {
       fetchItem()
     }, [])
@@ -35,31 +48,23 @@ const ProductDetail = ({ route, navigation }) => {
         </View>
       )
     };
-    const addToCart = async (item) => {
-      try {
-        const cart = JSON.parse(await AsyncStorage.getItem('cart')) || [];
-        cart.push(item);
-        await AsyncStorage.setItem('cart', JSON.stringify(cart));
-        Alert.alert('Success', 'Product added to cart');
-      } catch (error) {
-        console.error(error);
-      }
-    };
+
 
     return (
         <ScrollView style={styles.container}>
-           <View style={styles.positioning}>
-       <Image style={{top:25, left: -5}}source={require('../assets/Logo.png')}/>
-       <Pressable style={{right: 150}} onPress={() => navigation.openDrawer()}>
-            <Ionicons name="menu-outline" size={40} color="black"/>
-       </Pressable>
-       <Pressable style={{left: 110, top: -35}}><Ionicons name="search-outline" size={30} color="black"/></Pressable>
-       <Pressable style={{left: 150, top: -67}} onPress={() => navigation.navigate('Checkout')}>  
-            <View>
-                <Ionicons name="bag-outline" size={30} color="black" />
-            </View>
+            <View style={styles.positioning}>
+        <Image style={{top:25, left: -5}}source={require('../assets/Logo.png')}/>
+        <Pressable style={{right: 150}} onPress={() => navigation.goBack()}>
+                <Ionicons name="menu-outline" size={40} color="black"/>
         </Pressable>
-        </View>
+        <Pressable style={{left: 110, top: -35}}><Ionicons name="search-outline" size={30} color="black"/></Pressable>
+        <Pressable style={{left: 150, top: -67}} onPress={() => navigation.navigate('Cart')}>  
+                <View>
+                    <Ionicons name="bag-outline" size={30} color="black" />
+                </View>
+            </Pressable>
+            </View>
+
     
                 <>
                     <Image source={{uri: item.image}} style={styles.productImage} />
@@ -81,7 +86,7 @@ const ProductDetail = ({ route, navigation }) => {
                             Free Flat Rate Shipping{'\n'}
                             Estimated to be delivered on 09/11/2021 - 12/11/2021.
                         </Text>
-                        <TouchableOpacity style={styles.addButton} onPress={()=> addToCart(item)}>
+                        <TouchableOpacity style={styles.addButton} onPress={()=> addToCart(item, setItem)}>
                             <Text style={styles.addButtonText}>Add to Cart</Text>
                         </TouchableOpacity>
                     </View>

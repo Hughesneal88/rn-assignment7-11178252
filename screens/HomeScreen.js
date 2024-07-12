@@ -10,7 +10,7 @@ export default function HomeScreen ({navigation, route}) {
   return(
     <>
     <View style={styles.container}>
-      <Header />
+      <Header navigation={navigation}/>
       <ClothingComponent category={category} />
     </View>
     </>

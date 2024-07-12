@@ -3,10 +3,8 @@ import { StyleSheet, View, Text, Image, TouchableOpacity, FlatList, Alert } from
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, DrawerActions } from '@react-navigation/native';
 
-export default function Cart() {
+export default function Cart({ navigation }) {
     const [cartItems, setCartItems] = useState([]);
-    const [userName, setUserName] = useState(''); // Example name
-    const navigation = useNavigation();
 
     useEffect(() => {
         const fetchCartItems = async () => {
@@ -57,7 +55,7 @@ export default function Cart() {
     return (
         <View style={styles.container}>
             <View style={styles.headerContainer}>
-                <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Image source={require('../assets/Menu.png')} style={styles.icon} />
                 </TouchableOpacity>
                 <Image source={require('../assets/Logo.png')} style={styles.logo} />

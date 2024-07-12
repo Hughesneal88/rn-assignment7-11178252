@@ -35,4 +35,7 @@ This project is a mobile application UI mockup for a fashion store, created with
 
 ## Screenshots
 
-![Home screen](Screenshot_1720566873.png) ![Home selected on drawer](Screenshot_1720566880.png) ![Cart screen](Screenshot_1720566884.png) ![Cart screen on drawer](Screenshot_1720566887.png) ![Product detail screen](Screenshot_1720566891.png) ![Product detail screen on drawer](Screenshot_1720566895.png) ![Scrolled view of details](Screenshot_1720566900.png)
+![Image 1](screenshot1.jpg) 
+![Image 2](screenshot2.jpg) 
+![Image 3](screenshot3.jpg) 
+![Image 4](screenshot.png)
