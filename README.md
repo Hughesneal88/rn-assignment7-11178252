@@ -25,6 +25,7 @@ This project is a mobile application UI mockup for a fashion store, created with
 - **`/components`**: Contains reusable UI components.
 - **`/screens`**: Contains the main screens (Home, ProductDetail, CartScreen).
 
+
 ## Dependencies
 
 - **React Navigation:** Manages navigation and drawer.
